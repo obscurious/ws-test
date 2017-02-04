@@ -11,6 +11,7 @@ gem 'sequel_pg'
 gem 'rack-unreloader'
 
 gem 'puma'
+gem 'faye-websocket'
 
 group :test do
   gem 'capybara'
