@@ -1,4 +1,4 @@
-require_relative 'db'
+require_relative 'config/db'
 
 Sequel::Model.plugin :auto_validations
 Sequel::Model.plugin :prepared_statements
