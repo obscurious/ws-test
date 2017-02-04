@@ -9,7 +9,7 @@ require 'rack/test'
 
 require_relative '../minitest_helper'
 
-Capybara.app = App.freeze
+Capybara.app = Wassal.freeze
 
 class Minitest::Spec
   include Rack::Test::Methods

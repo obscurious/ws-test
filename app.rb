@@ -2,7 +2,7 @@ require_relative 'models'
 
 require 'roda'
 
-class App < Roda
+class Wassal < Roda
   opts[:unsupported_block_result] = :raise
   opts[:unsupported_matcher] = :raise
   opts[:verbatim_string_matcher] = true
@@ -16,7 +16,7 @@ class App < Roda
     'X-XSS-Protection'=>'1; mode=block'
 
   use Rack::Session::Cookie,
-    :key => '_App_session',
+    :key => '_Wassal_session',
     #:secure=>!TEST_MODE, # Uncomment if only allowing https:// access
     :secret=>File.read('.session_secret')
 
