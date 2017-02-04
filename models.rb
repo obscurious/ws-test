@@ -2,6 +2,7 @@ require_relative 'db'
 
 Sequel::Model.plugin :auto_validations
 Sequel::Model.plugin :prepared_statements
+Sequel::Model.plugin :uuid
 
 unless defined?(Unreloader)
   require 'rack/unreloader'

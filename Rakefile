@@ -1,12 +1,14 @@
 # Migrate
 
+MIGRATE_DIR = 'migrate'
+
 migrate = lambda do |env, version|
   ENV['RACK_ENV'] = env
   require_relative 'db'
   require 'logger'
   Sequel.extension :migration
   DB.loggers << Logger.new($stdout)
-  Sequel::Migrator.apply(DB, 'migrate', version)
+  Sequel::Migrator.apply(DB, MIGRATE_DIR, version)
 end
 
 desc "Migrate test database to latest version"
@@ -46,6 +48,11 @@ task :prod_up do
   migrate.call('production', nil)
 end
 
+desc "Create migration file"
+task :migration, [:name] do |t, args|
+  create_migration(args[:name])
+end
+
 # Shell
 
 irb = proc do |env|
@@ -61,17 +68,17 @@ irb = proc do |env|
 end
 
 desc "Open irb shell in test mode"
-task :test_irb do 
+task :test_irb do
   irb.call('test')
 end
 
 desc "Open irb shell in development mode"
-task :dev_irb do 
+task :dev_irb do
   irb.call('development')
 end
 
 desc "Open irb shell in production mode"
-task :prod_irb do 
+task :prod_irb do
   irb.call('production')
 end
 
@@ -92,4 +99,31 @@ end
 desc "Run web specs"
 task :web_spec do
   spec.call('./spec/web/*_spec.rb')
+end
+
+# Helper
+
+def create_migration(name)
+  unless name
+    puts "Name a migration: rake create_migration[add_foo_to_bars]"
+    return
+  end
+  timestamp = Time.now.utc.to_s.scan(/\d/).join
+  file_name = "#{timestamp}_#{name}.rb"
+  File.open([MIGRATE_DIR, file_name].join('/'), 'w') do |f|
+    f.write <<~FILE
+      #
+      # Migration #{name}
+      #
+
+      Sequel.migration do
+        up do
+        end
+
+        down do
+        end
+      end
+    FILE
+  end
+  puts "Created #{file_name}."
 end

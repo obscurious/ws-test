@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.3.3'
+
 gem 'rack_csrf'
 gem 'tilt', '>= 2'
 gem 'erubi'
